@@ -62,7 +62,7 @@ void CrazyDave::MemoryUnit::work(CrazyDave::State *state) {
   }
   if (state->mem_lsb_bus_.req_flag_.get()) {
     cur_entry_ = state->mem_lsb_bus_.entry_.get();
-    counter_ += 0;
+    counter_ += 3;
     busy_ = true;
   }
   state->mem_lsb_bus_.is_busy_ <= busy_;
