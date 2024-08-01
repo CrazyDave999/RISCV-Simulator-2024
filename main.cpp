@@ -8,7 +8,7 @@ int main() {
   freopen("../testcases/queens.data", "r", stdin);
   freopen("../log", "w", stdout);
 #else
-  freopen("../testcases/tak.data", "r", stdin);
+//  freopen("../testcases/tak.data", "r", stdin);
 #endif
   CrazyDave::CPU RISCV32I_cpu;
   RISCV32I_cpu.init(0);
