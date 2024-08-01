@@ -13,7 +13,7 @@ auto CrazyDave::CPU::run() -> uint8_t {
     if (state.sys_sig_.finish_.get()) {
       break;
     }
-    std::shuffle(units_.begin(), units_.end(), std::mt19937(std::random_device()()));
+//    std::shuffle(units_.begin(), units_.end(), std::mt19937(std::random_device()()));
     for (auto &unit : units_) {
       unit->work(&state);
     }
