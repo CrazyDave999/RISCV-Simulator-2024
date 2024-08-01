@@ -7,7 +7,7 @@
 namespace CrazyDave {
 constexpr int MAX_QUEUE_SIZE = 32;
 constexpr size_t REGISTER_NUM = 32;
-constexpr size_t MEM_SIZE = 1 << 29;
+constexpr size_t MEM_SIZE = 1 << 20;
 enum IssueType { LOAD, STORE, ARITH_I, ARITH, BRANCH, OTHER };
 #ifdef DEBUG
 static const std::vector<std::string> IssueTypeString{"LOAD", "STORE", "ARITH_I", "ARITH", "BRANCH", "OTHER"};
