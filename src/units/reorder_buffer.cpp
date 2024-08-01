@@ -58,11 +58,15 @@ void CrazyDave::ReorderBuffer::commit(CrazyDave::State *state) {
     state->pred_->check(entry.val_);
     if (entry.val_ != entry.pred_val_) {
 #ifdef DEBUG
-      //      std::cout << "##### predict failed #####\n";
+//            std::cout << "##### predict failed #####\n";
       //      std::cout << "commit: #" << entries_.head_index() << " op_: " << entry.op_ << " addr: " << entry.addr_ << "\n\n";
 
+
+
       ++cnt;
+      std::cout << "cnt: "<< cnt << "\n";
       std::cout << "addr: " << entry.addr_ << "\n";
+      state->print();
 #endif
       // predict failed. clean and correct the pc_.
       if (entry.val_) {
@@ -90,8 +94,9 @@ void CrazyDave::ReorderBuffer::commit(CrazyDave::State *state) {
 
   //  std::cout << "commit: #" << entries_.head_index() << " op_: " << entry.op_ << " addr: " << entry.addr_ << "\n\n";
   ++cnt;
+  std::cout << "cnt: "<< cnt << "\n";
   std::cout << "addr: " << entry.addr_ << "\n";
-
+  state->print();
 #endif
   entry.status_ = COMMIT;
   entry.busy_ = false;

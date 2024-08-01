@@ -47,7 +47,7 @@ class LoadStoreBuffer : public Module {
 #endif
 
  private:
-  CircularQueue<LSBEntry, 32> entries_;
+  CircularQueue<LSBEntry, MAX_QUEUE_SIZE> entries_;
 };
 }  // namespace CrazyDave
 #endif  // RISC_V_SIMULATOR_2024_LOAD_STORE_BUFFER_HPP

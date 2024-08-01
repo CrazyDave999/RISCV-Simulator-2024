@@ -1,5 +1,6 @@
 #ifndef RISC_V_SIMULATOR_2024_CPU_HPP
 #define RISC_V_SIMULATOR_2024_CPU_HPP
+#include <iomanip>
 #include <random>
 #include <vector>
 
@@ -79,12 +80,12 @@ struct State {
   } sys_sig_;
 
   Predictor *pred_;
+  MemoryUnit *mem_;
 #ifdef DEBUG
   ReorderBuffer *rob_;
   ArithReservationStation *rs_;
   LoadStoreBuffer *lsb_;
   InstructionUnit *iu_;
-  MemoryUnit *mem_;
 #endif
   void clean() {
     for (auto &reg : rf_) {
@@ -147,14 +148,16 @@ struct State {
   }
 #ifdef DEBUG
   void print() {
-    std::cout << "clk: " << clk_ << "\n";
-
-    std::cout << "Register file:\nnum val dep\n";
+    //    std::cout << "clk: " << clk_ << "\n";
+    //
+    //    std::cout << "Register file:\nnum val dep\n";
+    //    for (int i = 0; i < REGISTER_NUM; ++i) {
+    //      std::cout << "x" << i << "\t" << rf_[i].val_.get() << "\t" << rf_[i].depend_.get() << "\n";
+    //    }
     for (int i = 0; i < REGISTER_NUM; ++i) {
-      std::cout << "#" << i << "\t" << rf_[i].val_.get() << "\t" << rf_[i].depend_.get() << "\n";
+      std::cout << "x" << i << "=" << std::setw(8) << std::setfill(' ') << rf_[i].val_.get() << "\n";
     }
-
-    std::cout << "\n";
+    //    std::cout << "\n";
   }
 #endif
 };

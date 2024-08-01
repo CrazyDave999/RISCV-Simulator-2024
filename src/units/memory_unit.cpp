@@ -3,6 +3,13 @@
 #include "cpu.hpp"
 
 void CrazyDave::MemoryUnit::work(CrazyDave::State *state) {
+  if (state->sys_sig_.clean_.get()) {
+    counter_ = 0;
+    busy_ = false;
+    state->mem_lsb_bus_.is_busy_ <= false;
+    cur_entry_ = MemoryAccessEntry();
+    return;
+  }
   if (counter_ > 0) {
     --counter_;
     state->mem_lsb_bus_.is_busy_ <= true;
@@ -19,15 +26,15 @@ void CrazyDave::MemoryUnit::work(CrazyDave::State *state) {
       switch (cur_entry_.op_) {
         case LB:
         case LBU:
-          val = mem_[addr + 3];
+          val = mem_[addr];
           break;
         case LH:
         case LHU:
-          val = mem_[addr + 3] + (static_cast<int>(mem_[addr + 2]) << 8);
+          val = mem_[addr] + (static_cast<int>(mem_[addr + 1]) << 8);
           break;
         case LW:
-          val = mem_[addr + 3] + (static_cast<int>(mem_[addr + 2]) << 8) + (static_cast<int>(mem_[addr + 1]) << 16) +
-                (static_cast<int>(mem_[addr]) << 24);
+          val = mem_[addr] + (static_cast<int>(mem_[addr + 1]) << 8) + (static_cast<int>(mem_[addr + 2]) << 16) +
+                (static_cast<int>(mem_[addr + 3]) << 24);
           break;
         default:
           break;
@@ -41,14 +48,14 @@ void CrazyDave::MemoryUnit::work(CrazyDave::State *state) {
     } else {
       auto val = cur_entry_.val_;
       if (cur_entry_.op_ == SB || cur_entry_.op_ == SH || cur_entry_.op_ == SW) {
-        mem_[addr + 3] = val;
+        mem_[addr] = val;
       }
       if (cur_entry_.op_ == SH || cur_entry_.op_ == SW) {
-        mem_[addr + 2] = val >> 8;
+        mem_[addr + 1] = val >> 8;
       }
       if (cur_entry_.op_ == SW) {
-        mem_[addr + 1] = val >> 16;
-        mem_[addr] = val >> 24;
+        mem_[addr + 2] = val >> 16;
+        mem_[addr + 3] = val >> 24;
       }
     }
     busy_ = false;
@@ -63,8 +70,7 @@ void CrazyDave::MemoryUnit::work(CrazyDave::State *state) {
 auto CrazyDave::MemoryUnit::fetch_word(addr_t addr) -> word_t {
   word_t ins_bin = 0;
   for (int i = 0; i < sizeof(word_t) / sizeof(byte_t); ++i) {
-    ins_bin <<= sizeof(byte_t) * 8;
-    ins_bin |= mem_[addr + i];
+    ins_bin |= mem_[addr + i] << (i * 8 * sizeof(byte_t));
   }
   return ins_bin;
 }
@@ -82,10 +88,7 @@ CrazyDave::Memory::Memory() {
 
       while (data_stream >> byte_str) {
         auto val = static_cast<byte_t>(std::strtol(byte_str.c_str(), nullptr, 16));
-        int base = static_cast<int>(addr - addr % 4);
-        int offset = static_cast<int>(3 - addr % 4);
-        data_[base + offset] = val;
-        addr++;
+        data_[addr++] = val;
       }
     }
   }

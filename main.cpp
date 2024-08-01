@@ -5,10 +5,10 @@
 int main() {
 
 #ifdef DEBUG
-  freopen("../testcases/hanoi.data", "r", stdin);
+  freopen("../testcases/queens.data", "r", stdin);
   freopen("../log", "w", stdout);
 #else
-  freopen("../testcases/array_test1.data", "r", stdin);
+  freopen("../testcases/queens.data", "r", stdin);
 #endif
   CrazyDave::CPU RISCV32I_cpu;
   RISCV32I_cpu.init(0);

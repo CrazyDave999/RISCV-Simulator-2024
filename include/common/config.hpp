@@ -1,6 +1,6 @@
 #ifndef RISC_V_SIMULATOR_2024_CONFIG_HPP
 #define RISC_V_SIMULATOR_2024_CONFIG_HPP
-#define DEBUG
+//#define DEBUG
 #include <iostream>
 #include <string>
 #include <vector>

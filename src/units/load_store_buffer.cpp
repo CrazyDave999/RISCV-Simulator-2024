@@ -7,7 +7,7 @@ void CrazyDave::LoadStoreBuffer::monitor(CrazyDave::State *state) {
     entries_.push(entry);
   }
 
-  auto cdb = state->cdb_[2];
+  auto &cdb = state->cdb_[2];
   if (cdb.flag_.get()) {
     for (auto &entry : entries_) {
       if (!entry.busy) {
